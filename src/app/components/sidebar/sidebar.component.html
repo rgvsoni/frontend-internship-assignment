@@ -1,0 +1,37 @@
+<div class="mat-elevation-z3">
+  <mat-action-list>
+
+    <!-- home button -->
+    <button routerLink="/" mat-list-item>
+      <mat-icon matListItemIcon>home</mat-icon> Home
+    </button>
+
+
+    <!-- search button -->
+    <button mat-list-item [matMenuTriggerFor]="menu">
+      <mat-icon matListItemIcon>search</mat-icon> Search
+    </button>
+
+
+    <!-- search options -->
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="selectCatalog('title')">
+        Search by Book Name
+      </button>
+      <button mat-menu-item (click)="selectCatalog('author')">
+        Search by Author Name
+      </button>
+    </mat-menu>
+
+
+    <!-- subject options -->
+    <button
+      *ngFor="let subject of trendingSubjects"
+      mat-list-item
+      (click)="onClick(subject.name)"
+    >
+      <mat-icon matListItemIcon>subject</mat-icon> {{ subject.name }}
+    </button>
+    
+  </mat-action-list>
+</div>

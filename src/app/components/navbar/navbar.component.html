@@ -1,0 +1,43 @@
+<!-- navbar created using mat-toolbar  -->
+
+<mat-toolbar class = "mat-elevation-z3 bcolor">
+  <span style="font-size: larger">Books Library</span>
+  <span class="example-spacer"></span>
+  <form>
+
+    <!-- dropdown -->
+    <select
+      class="form-select form-select-md"
+      aria-label=".form-select-md example"
+      style="width: 200px"
+      [formControl]="dropdown"
+    >
+      <option value="catalog">Library Catalog</option>
+      <option value="author">Author</option>
+      <option value="title">Title</option>
+    </select>
+  </form>
+
+  <!-- search bar with clear search button  -->
+  <span class="space-between"></span>
+  <div class="searchInput">
+    <div class="input-group" style="gap:10px">
+      <input
+        [formControl]="bookSearch"
+       
+        type="text"
+        class="form-control rounded"
+        placeholder="Search Books"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        style="width: 400px"
+        #autofocus
+      />
+      <button type="button" (click)="onClear()" class="btn btn-outline-primary rounded">
+        Clear Search
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+

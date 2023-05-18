@@ -1,33 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, filter } from 'rxjs';
+import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'front-end-internship-assignment-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
-  bookSearch: FormControl;
+export class HomeComponent {
 
-  constructor() {
-    this.bookSearch = new FormControl('');
+  // selected option in search option of sidebar
+  searchRequest = "";
+
+  // tells whether to focus the search bar in navbar
+  focus = false;
+  
+  request(event: string) {
+    this.searchRequest = event;
   }
-
-  trendingSubjects: Array<any> = [
-    { name: 'JavaScript' },
-    { name: 'CSS' },
-    { name: 'HTML' },
-    { name: 'Harry Potter' },
-    { name: 'Crypto' },
-  ];
-
-  ngOnInit(): void {
-    this.bookSearch.valueChanges
-      .pipe(
-        debounceTime(300),
-      ).
-      subscribe((value: string) => {
-      });
+  focusValue(event: boolean) {
+    this.focus = event;
   }
 }
