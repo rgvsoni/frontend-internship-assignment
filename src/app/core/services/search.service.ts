@@ -54,7 +54,7 @@ export class SearchService {
     const dataNeeded = pageSize * (currPage + 1);
 
     // cache key for the search request
-    const cacheKey = `${this.searchRequest}_${this.search}`;
+    const cacheKey = `${this.selectedRequest}_${this.search}`;
 
     // books available in cached data
     let dataAvailable = 0;

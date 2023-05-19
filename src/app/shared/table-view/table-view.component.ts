@@ -5,6 +5,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Book } from 'src/app/core/models/book-response.model';
 import { SearchService } from 'src/app/core/services/search.service';
 import { SubjectsService } from 'src/app/core/services/subjects.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'front-end-internship-assignment-table-view',
@@ -43,12 +44,12 @@ export class TableViewComponent implements OnInit, AfterViewInit {
     private router: Router,
     private searchService: SearchService,
     private subjectService: SubjectsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     console.log('print')
-    
-    
+
+
   }
 
 
@@ -56,13 +57,13 @@ export class TableViewComponent implements OnInit, AfterViewInit {
 
     // observing the change of queryParams and creating the tables accordingly 
     // for subject request or search request
-    
+
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.query = queryParams['request'];
       this.createTable();
       this.paginator.firstPage();
     })
-    
+
   }
 
   // changing the entries of table when the page is changed
@@ -75,7 +76,7 @@ export class TableViewComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.query = queryParams['request'];
       this.updateTable();
-      
+
     });
   }
 
@@ -89,7 +90,7 @@ export class TableViewComponent implements OnInit, AfterViewInit {
     else {
       this.subscribeSubjectBooks();
     }
-    
+
   }
 
   // updates the data which was emitted from the services when the page was changed
@@ -106,37 +107,42 @@ export class TableViewComponent implements OnInit, AfterViewInit {
   }
 
   subscribeSearchedBooks() {
-    this.searchService.booksEmitter.subscribe(
-      (data: Book[]) => {
-        this.books = data;
-        this.showContent();
-      },
-      (error) => {
-        console.log(error + 'in extracting data');
-      }
-    )
+    this.searchService.booksEmitter
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: (data: Book[]) => {
+          this.books = data;
+          this.showContent();
+        },
+        error: (error) => {
+          console.log(error + 'in extracting data');
+        }
+      })
   }
 
   subscribeSubjectBooks() {
 
-    this.subjectService.subjectEmitter.subscribe(
-      (data: string)=> {
-        this.subjectName = data;
-        console.log(data);
-      },
-      (error)=> {
-        console.log(error + 'in subject name');
-      }
-    )
-    this.subjectService.booksEmitter.subscribe(
-      (data: Book[]) => {
-        this.books = data;
-        this.showContent();
-      },
-      (error) => {
-        console.log(error + 'in extracting data');
-      }
-    )
+    this.subjectService.subjectEmitter
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: (data: string) => {
+          this.subjectName = data;
+        },
+        error: (error) => {
+          console.log(error + 'in subject name');
+        }
+      })
+    this.subjectService.booksEmitter
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: (data: Book[]) => {
+          this.books = data;
+          this.showContent();
+        },
+        error: (error) => {
+          console.log(error + 'in extracting data');
+        }
+      })
   }
 
   showContent() {
